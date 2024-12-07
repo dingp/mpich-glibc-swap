@@ -49,7 +49,7 @@ jobs:
           build_dir="${{ github.workspace }}/docker-build"
           mkdir -p $build_dir
           cd $build_dir
-          cp ${{ github.workspace }}/ciapi/container/fedora-26.Dockerfile $build_dir/Dockerfile
+          cp ${{ github.workspace }}/mpich-glibc-swap/container/fedora-26.Dockerfile $build_dir/Dockerfile
 
 
       - name: Build and push Docker images
