@@ -38,9 +38,9 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            ghcr.io/dingp/mpich-glibc-swap
+            ghcr.io/dingp/fedora
           tags: |
-            type=raw,value=latest
+            type=raw,value=26-mpich
             type=ref,event=branch
             type=ref,event=tag
 
