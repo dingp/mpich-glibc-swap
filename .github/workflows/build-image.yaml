@@ -44,18 +44,11 @@ jobs:
             type=ref,event=branch
             type=ref,event=tag
 
-      - name: prepare build dir
-        run: |
-          build_dir="${{ github.workspace }}/docker-build"
-          mkdir -p $build_dir
-          cd $build_dir
-          cp ${{ github.workspace }}/mpich-glibc-swap/container/fedora-26.Dockerfile $build_dir/Dockerfile
-
-
       - name: Build and push Docker images
         uses: docker/build-push-action@v3
         with:
-          context: ${{ github.workspace }}/docker-build
+          context: ${{ github.workspace }}/mpich-glibc-swap
           push: true
+          file: ${{ github.workspace }}/mpich-glibc-swap/container/fedora-26.Dockerfile 
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

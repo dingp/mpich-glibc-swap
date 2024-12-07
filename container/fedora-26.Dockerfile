@@ -17,5 +17,7 @@ RUN cd /build && wget http://www.mpich.org/static/downloads/3.4.1/mpich-3.4.1.ta
 ENV PATH=${PATH}:/mpich/bin
 ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/mpich/lib
 
+ADD ../app /app
+RUN mpicc /app/xthi-mpi.c -o /app/check-mpi
 
 ENTRYPOINT ["/bin/bash"]
