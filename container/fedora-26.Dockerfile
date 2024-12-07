@@ -20,4 +20,4 @@ ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/mpich/lib
 ADD ../app /app
 RUN mpicc /app/xthi-mpi.c -o /app/check-mpi
 
-ENTRYPOINT ["/bin/bash"]
+CMD ["/bin/bash"]
