@@ -201,7 +201,14 @@ It works!
 
 ## Wrap-up
 
-Exploring this topic was a fun experience like going down a rabbit hole. The full example is available in [this repository](https://github.com/dingp/mpich-glibc-swap), which includes:
+Exploring this topic was a fun experience like going down a rabbit hole. 
+
+The solution here contains two key parts:
+- bring the full suite of GLIBC libraries from the host, including the matched `ld.so`;
+- use the alternate `ld.so` to run he executable.
+
+
+The full example is available in [this repository](https://github.com/dingp/mpich-glibc-swap), which includes:
 
 - [`container/fedora-26.Dockerfile`](https://github.com/dingp/mpich-glibc-swap/blob/main/container/fedora-26.Dockerfile): A Dockerfile for the container image.
 - [`app/xthi-mpi.c`](https://github.com/dingp/mpich-glibc-swap/blob/main/app/xthi-mpi.c): Source code for a simple MPI application used for testing (sourced from [NERSC documentation](https://docs.nersc.gov/jobs/affinity/xthi-mpi.c)).
@@ -214,3 +221,9 @@ Exploring this topic was a fun experience like going down a rabbit hole. The ful
 ### Fun Fact
 
 While searching for a base image with an older `GLIBC` version, I initially considered `RHEL7` equivalents like `ScientificLinux 7` and `CentOS 7`. Unfortunately, these proved unusable due to the lack of active repository mirrors. Without access to mirrors, a minimal DockerHub image becomes useless, as `gcc` and other utilities are required. Fortunately, `Fedora 26` still provides active mirrors and includes an appropriately aged `GLIBC` version.
+
+### Next to do
+
+- Do a similar test with Debian/Ubuntu;
+- Test with GPU-aware cray-mpich on GPU nodes;
+- A wild test is to do this with a Linux distro using the `musl` implementation of libc.
