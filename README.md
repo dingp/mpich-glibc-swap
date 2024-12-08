@@ -85,8 +85,6 @@ Even with all related libraries, the following error occurs:
 
 This happens because `ld-linux.so.2` and `libc.so.6` are mismatched. The executable uses the hardcoded `ld-linux.so.2` path from its link time, ignoring alternatives in `LD_LIBRARY_PATH`.
 
-## Third Attempt: Overwriting the System `ld-linux.so.2`
-
 ## Third Attempt - Can We Overwrite the System `ld-linux.so.2`?
 
 Nice try! You cannot.
