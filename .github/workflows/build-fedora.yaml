@@ -1,4 +1,4 @@
-name: Build fedora 26 docker image
+name: Build fedora 26 image
 
 on:
   #schedule:
