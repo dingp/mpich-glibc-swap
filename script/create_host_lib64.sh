@@ -19,3 +19,8 @@ ln -s libpthread-2.31.so libpthread.so.0
 ln -s libresolv-2.31.so libresolv.so.2 
 ln -s librt-2.31.so librt.so.1 
 ln -s libutil-2.31.so libutil.so.1 
+
+# needed by ubuntu-16.04
+cp /usr/lib64/libpcre.so.1.2.13 .
+ln -s libpcre.so.1.2.13 libpcre.so.1
+ln -s libpcre.so.1.2.13 libpcre.so

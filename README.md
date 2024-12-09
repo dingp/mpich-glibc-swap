@@ -178,7 +178,7 @@ salloc: job 893410 has been allocated resources
 salloc: Granted job allocation 893410
 salloc: Waiting for resource configuration
 salloc: Nodes nid[200003-200004] are ready for job
-dingpf@nid200003:/mscratch/sd/d/dingpf/mpich-glibc-swap> cat script/srun-glibc-swap.sh
+dingpf@nid200003:/mscratch/sd/d/dingpf/mpich-glibc-swap> cat script/srun-glibc-swap-fedora.sh
 srun --ntasks-per-node 4 -N 2  podman-hpc run --rm  --mpi \
 -v $SCRATCH:/scratch \
 ghcr.io/dingp/fedora:26-mpich \
@@ -210,13 +210,16 @@ The solution here contains two key parts:
 
 The full example is available in [this repository](https://github.com/dingp/mpich-glibc-swap), which includes:
 
-- [`container/fedora-26.Dockerfile`](https://github.com/dingp/mpich-glibc-swap/blob/main/container/fedora-26.Dockerfile): A Dockerfile for the container image.
+- [`container/fedora-26.Dockerfile`](https://github.com/dingp/mpich-glibc-swap/blob/main/container/fedora-26.Dockerfile): A Dockerfile for the container image based on `fedora:26`.
+- [`container/ubuntu-16.04.Dockerfile`](https://github.com/dingp/mpich-glibc-swap/blob/main/container/ubuntu-16.04.Dockerfile): A Dockerfile for the container image based on `ubuntu:16.04`.
 - [`app/xthi-mpi.c`](https://github.com/dingp/mpich-glibc-swap/blob/main/app/xthi-mpi.c): Source code for a simple MPI application used for testing (sourced from [NERSC documentation](https://docs.nersc.gov/jobs/affinity/xthi-mpi.c)).
 - [`script/create_host_lib64.sh`](https://github.com/dingp/mpich-glibc-swap/blob/main/script/create_host_lib64.sh): A script to gather GLIBC library bundles from the host (valid for `muller` or `perlmutter` as of 2024-12-07). Note: This script could be improved to eliminate hard-coded library versions.
 - Three scripts designed for compute nodes:
     - [`script/run-fedora-mpi-it.sh`](https://github.com/dingp/mpich-glibc-swap/blob/main/script/run-fedora-mpi-it.sh): Runs the container interactively with all required libraries volume-mounted, enabling live testing.
-    - [`script/srun-glibc-swap.sh`](https://github.com/dingp/mpich-glibc-swap/blob/main/script/srun-glibc-swap.sh): Executes the MPI application using the appropriate `ld.so` loader.
+    - [`script/srun-glibc-swap-fedora.sh`](https://github.com/dingp/mpich-glibc-swap/blob/main/script/srun-glibc-swap-fedora.sh): Executes the MPI application using the appropriate `ld.so` loader (using `fedora:26` base image).
     - [`script/srun-no-glibc-swap.sh`](https://github.com/dingp/mpich-glibc-swap/blob/main/script/srun-no-glibc-swap.sh): Demonstrates failure due to mismatched `GLIBC` versions required by the MPI libraries or their dependencies.
+    - [`script/run-ubuntu-mpi-it.sh`](https://github.com/dingp/mpich-glibc-swap/blob/main/script/run-ubuntu-mpi-it.sh): Similar as above, but for the image based on `ubuntu:16.04`;
+    - [`script/srun-glibc-swap-ubuntu.sh`](https://github.com/dingp/mpich-glibc-swap/blob/main/script/srun-glibc-swap-ubuntu.sh): Similar as above, but for the image based on `ubuntu:16.04`;
 
 ### Fun Fact
 
@@ -224,6 +227,5 @@ While searching for a base image with an older `GLIBC` version, I initially cons
 
 ### Next to do
 
-- Do a similar test with Debian/Ubuntu;
 - Test with GPU-aware cray-mpich on GPU nodes;
-- A wild test is to do this with a Linux distro using the `musl` implementation of libc.
+- A wild test is to do this with a Linux distro using the `musl` implementation of libc. Replacing `GLIBC` with `musl` here for all the swapped MPI libraries and dependencies is unlikely going to work, as that depends a lot on those libraries to not use any features exclusively implemented in `GLIBC`... 

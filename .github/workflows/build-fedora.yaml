@@ -1,4 +1,4 @@
-name: Build docker image
+name: Build fedora 26 docker image
 
 on:
   #schedule:
@@ -8,6 +8,9 @@ on:
     branches: [ main ]
     tags:
       - 'v*'
+    paths:
+      - container/fedora-26.Dockerfile
+      - app/xthi-mpi.c
 
   workflow_dispatch:
 

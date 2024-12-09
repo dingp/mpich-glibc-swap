@@ -1,0 +1,57 @@
+name: Build ubuntu 16.04 image
+
+on:
+  #schedule:
+  #  - cron: "0 5 * * 2"
+
+  push:
+    branches: [ main ]
+    tags:
+      - 'v*'
+    paths:
+      - container/ubuntu-16.04.Dockerfile
+      - app/xthi-mpi.c
+
+  workflow_dispatch:
+
+jobs:
+
+  build_and_push_image:
+    name: Build and push image
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+        with:
+          repository: dingp/mpich-glibc-swap
+          path: mpich-glibc-swap
+      
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: |
+            ghcr.io/dingp/ubuntu
+          tags: |
+            type=raw,value=26-mpich
+            type=ref,event=branch
+            type=ref,event=tag
+
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v3
+        with:
+          context: ${{ github.workspace }}/mpich-glibc-swap
+          push: true
+          file: ${{ github.workspace }}/mpich-glibc-swap/container/ubuntu.Dockerfile 
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
