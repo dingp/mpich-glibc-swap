@@ -52,6 +52,6 @@ jobs:
         with:
           context: ${{ github.workspace }}/mpich-glibc-swap
           push: true
-          file: ${{ github.workspace }}/mpich-glibc-swap/container/ubuntu.Dockerfile 
+          file: ${{ github.workspace }}/mpich-glibc-swap/container/ubuntu-16.04.Dockerfile 
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
